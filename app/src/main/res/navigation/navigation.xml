@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/carsRepresentationFragment">
+
+    <fragment
+        android:id="@+id/carsRepresentationFragment"
+        android:name="com.example.carapp.fragments.CarsRepresentationFragment"
+        android:label="CarsRepresentationFragment"
+        tools:layout="@layout/fragment_cars_representation"/>
+</navigation>
