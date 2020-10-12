@@ -3,6 +3,7 @@ package com.example.carapp.appComponents;
 import android.content.Context;
 import android.location.LocationManager;
 import android.util.Log;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -14,8 +15,7 @@ public class LocationModule {
     @Singleton
     public LocationManager getLocationManager(Context context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        Log.d("LocationModule", "location manager" + locationManager.toString());
-       return locationManager;
-   }
+        return locationManager;
+    }
 
 }

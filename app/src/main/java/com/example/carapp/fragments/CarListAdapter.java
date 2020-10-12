@@ -1,5 +1,6 @@
 package com.example.carapp.fragments;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.example.carapp.DownloadImageTask;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.CarListViewHolder> implements Filterable {
     private List<Car> carsList = new ArrayList<Car>();
@@ -53,7 +55,7 @@ class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.CarListViewHold
         return filter;
     }
 
-    Filter filter = new Filter() {
+    private Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Car> filteredList = new ArrayList<>();
@@ -101,7 +103,17 @@ class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.CarListViewHold
             } else {
                 binding.carDistance.setText("unable to calculate distance");
             }
-            new DownloadImageTask(binding.carPicture).execute(car.getModel().getPhotoUrl());
+
+            //binding carIcons
+            DownloadImageTask task = new DownloadImageTask();
+            Bitmap carIcon;
+            try {
+                carIcon = task.execute(car.getModel().getPhotoUrl()).get();
+                binding.carPicture.setImageBitmap(carIcon);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
 
         }
     }

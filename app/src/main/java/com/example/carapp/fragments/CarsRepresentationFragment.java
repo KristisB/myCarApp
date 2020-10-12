@@ -27,6 +27,7 @@ import com.example.carapp.model.Car;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,7 +57,6 @@ public class CarsRepresentationFragment extends Fragment {
             public void onResponse(Call<List<Car>> call, Response<List<Car>> response) {
 
                 carList = response.body();
-                Log.d("CarList", "Car list received. List size " + carList.size());
                 carListAdapter = new CarListAdapter(carList, mLocation);
                 binding.carsRecycleView.setAdapter(carListAdapter);
                 binding.carsRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -77,24 +77,17 @@ public class CarsRepresentationFragment extends Fragment {
                 binding.sortByDistanceButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                                 PackageManager.PERMISSION_GRANTED &&
-                                ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                                ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                                         PackageManager.PERMISSION_GRANTED) {
                             LocationManager locationManager = mainActivity.getLocationManager();
                             Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (locationManager == null) {
-                                Log.d("Location manager", "null");
-                            } else {
-                                Log.d("On Click", "onClick: myLocation coordinates = " + myLocation.getLatitude() + " " + myLocation.getLongitude());
-
-                            }
                             mLocation = myLocation;
 
                             if (myLocation != null) {
                                 Log.d("myLocation", "onClick: myLocation" + myLocation.getLongitude() + myLocation.getLatitude());
-                                carList.sort((car1, car2) -> new Double(car1.getDistance(myLocation)).compareTo(new Double(car2.getDistance(myLocation))));
-
+                                carList.sort((car1, car2) -> Double.valueOf(car1.getDistance(myLocation)).compareTo(Double.valueOf(car2.getDistance(myLocation))));
                                 carListAdapter = new CarListAdapter(carList, myLocation);
                                 binding.carsRecycleView.setAdapter(carListAdapter);
                             } else {
@@ -102,7 +95,7 @@ public class CarsRepresentationFragment extends Fragment {
                                 ;
                             }
                         } else {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                            ActivityCompat.requestPermissions(requireActivity(), new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
                         }
@@ -114,7 +107,7 @@ public class CarsRepresentationFragment extends Fragment {
             @Override
             public void onFailure(Call<List<Car>> call, Throwable t) {
                 Log.d("CarList", "smth wrong - no car list received ");
-                Log.d("CarList", t.getMessage());
+                Log.d("CarList", Objects.requireNonNull(t.getMessage()));
             }
         });
 
