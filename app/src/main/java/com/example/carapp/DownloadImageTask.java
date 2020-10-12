@@ -1,4 +1,4 @@
-package com.example.carapp.model;
+package com.example.carapp;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -1,8 +1,8 @@
-package com.example.carapp.model;
+package com.example.carapp.network;
+
+import com.example.carapp.model.Car;
 
 import java.util.List;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 

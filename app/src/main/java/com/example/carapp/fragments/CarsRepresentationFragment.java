@@ -1,8 +1,6 @@
 package com.example.carapp.fragments;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -12,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.carapp.MainActivity;
-import com.example.carapp.R;
+import com.example.carapp.appComponents.CarAppComponent;
+import com.example.carapp.appComponents.ContextModule;
+import com.example.carapp.appComponents.DaggerCarAppComponent;
 import com.example.carapp.databinding.FragmentCarsRepresentationBinding;
 import com.example.carapp.model.Car;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,10 +34,11 @@ import retrofit2.Response;
 
 public class CarsRepresentationFragment extends Fragment {
     private FragmentCarsRepresentationBinding binding;
-    List<Car> carList = new ArrayList<>();
-    Location mLocation;
-    MainActivity mainActivity;
-    CarListAdapter carListAdapter;
+    private List<Car> carList = new ArrayList<>();
+    private Location mLocation;
+    private CarListAdapter carListAdapter;
+    private CarAppComponent appComponents;
+    private MainActivity mainActivity;
 
 
     @Nullable
@@ -48,15 +46,18 @@ public class CarsRepresentationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCarsRepresentationBinding.inflate(inflater, container, false);
         binding.carsRecycleView.setHasFixedSize(true);
-        mainActivity = (MainActivity) requireActivity();
+        mainActivity = (MainActivity) getActivity();
+        appComponents = DaggerCarAppComponent.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
 
-        mainActivity.getService().getCars().enqueue(new Callback<List<Car>>() {
+        appComponents.getApiService().getCars().enqueue(new Callback<List<Car>>() {
             @Override
             public void onResponse(Call<List<Car>> call, Response<List<Car>> response) {
 
                 carList = response.body();
                 Log.d("CarList", "Car list received. List size " + carList.size());
-                carListAdapter = new CarListAdapter(carList,mLocation);
+                carListAdapter = new CarListAdapter(carList, mLocation);
                 binding.carsRecycleView.setAdapter(carListAdapter);
                 binding.carsRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -80,14 +81,21 @@ public class CarsRepresentationFragment extends Fragment {
                                 PackageManager.PERMISSION_GRANTED &&
                                 ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                                         PackageManager.PERMISSION_GRANTED) {
-                            Location myLocation = mainActivity.getLocationManager().getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            mLocation=myLocation;
+                            LocationManager locationManager = mainActivity.getLocationManager();
+                            Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (locationManager == null) {
+                                Log.d("Location manager", "null");
+                            } else {
+                                Log.d("On Click", "onClick: myLocation coordinates = " + myLocation.getLatitude() + " " + myLocation.getLongitude());
+
+                            }
+                            mLocation = myLocation;
 
                             if (myLocation != null) {
-                                Log.d("myLocation", "onClick: myLocation"+ myLocation.getLongitude()+myLocation.getLatitude());
+                                Log.d("myLocation", "onClick: myLocation" + myLocation.getLongitude() + myLocation.getLatitude());
                                 carList.sort((car1, car2) -> new Double(car1.getDistance(myLocation)).compareTo(new Double(car2.getDistance(myLocation))));
 
-                                carListAdapter = new CarListAdapter(carList,myLocation);
+                                carListAdapter = new CarListAdapter(carList, myLocation);
                                 binding.carsRecycleView.setAdapter(carListAdapter);
                             } else {
                                 Log.d("Location", "onClick: Location is null ");

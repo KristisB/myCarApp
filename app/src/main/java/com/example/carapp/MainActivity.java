@@ -3,11 +3,10 @@ package com.example.carapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.example.carapp.model.ApiService;
+import com.example.carapp.network.ApiService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,20 +22,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://development.espark.lt/api/mobile/public/")
-                .addConverterFactory(MoshiConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(ApiService.class);
+    }
+    public LocationManager getLocationManager(){
+        return  (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    }
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-    }
-    public ApiService getService() {
-        return service;
-    }
-    public LocationManager getLocationManager() {
-        return locationManager;
-    }
 
 }

@@ -1,22 +1,16 @@
 package com.example.carapp.fragments;
 
-import android.graphics.Bitmap;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.carapp.databinding.FragmentCarsListItemBinding;
-import com.example.carapp.databinding.FragmentCarsRepresentationBinding;
 import com.example.carapp.model.Car;
-import com.example.carapp.model.CarModel;
-import com.example.carapp.model.DownloadImageTask;
+import com.example.carapp.DownloadImageTask;
 
 import java.util.ArrayList;
 import java.util.Collection;
