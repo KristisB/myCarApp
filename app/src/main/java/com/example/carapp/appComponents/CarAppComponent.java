@@ -10,8 +10,6 @@ import retrofit2.Retrofit;
 @Component (modules = {RetrofitModule.class, LocationModule.class})
 public interface CarAppComponent {
 
-    Retrofit getRetrofit();
-
     ApiService getApiService();
 
     LocationManager getLocationManager();

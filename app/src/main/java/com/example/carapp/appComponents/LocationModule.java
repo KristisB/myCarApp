@@ -14,8 +14,7 @@ public class LocationModule {
     @Provides
     @Singleton
     public LocationManager getLocationManager(Context context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        return locationManager;
+        return (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
 
 }

@@ -47,11 +47,10 @@ public class CarsRepresentationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCarsRepresentationBinding.inflate(inflater, container, false);
         binding.carsRecycleView.setHasFixedSize(true);
-        mainActivity = (MainActivity) getActivity();
         appComponents = DaggerCarAppComponent.builder()
                 .contextModule(new ContextModule(getContext()))
                 .build();
-
+        
         appComponents.getApiService().getCars().enqueue(new Callback<List<Car>>() {
             @Override
             public void onResponse(Call<List<Car>> call, Response<List<Car>> response) {
@@ -60,7 +59,6 @@ public class CarsRepresentationFragment extends Fragment {
                 carListAdapter = new CarListAdapter(carList, mLocation);
                 binding.carsRecycleView.setAdapter(carListAdapter);
                 binding.carsRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
-
                 binding.plateNumberSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
@@ -81,7 +79,7 @@ public class CarsRepresentationFragment extends Fragment {
                                 PackageManager.PERMISSION_GRANTED &&
                                 ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                                         PackageManager.PERMISSION_GRANTED) {
-                            LocationManager locationManager = mainActivity.getLocationManager();
+                            LocationManager locationManager = appComponents.getLocationManager();
                             Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             mLocation = myLocation;
 
