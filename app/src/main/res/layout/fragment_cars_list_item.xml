@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="vertical">
-        <TextView
+        <View
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:background="#888888"/>

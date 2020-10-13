@@ -17,7 +17,7 @@
             android:id="@+id/plateNumberSearch"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:queryHint="enter plate number"
+            android:queryHint="@string/enter_plate_number"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/sortByDistanceButton"
@@ -27,12 +27,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/carsRecycleView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sortByDistanceButton">
+            app:layout_constraintTop_toBottomOf="@id/plateNumberSearch">
 
         </androidx.recyclerview.widget.RecyclerView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

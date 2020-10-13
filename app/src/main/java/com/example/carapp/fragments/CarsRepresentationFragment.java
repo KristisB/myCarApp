@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.carapp.MainActivity;
 import com.example.carapp.appComponents.CarAppComponent;
 import com.example.carapp.appComponents.ContextModule;
 import com.example.carapp.appComponents.DaggerCarAppComponent;
@@ -39,8 +39,6 @@ public class CarsRepresentationFragment extends Fragment {
     private Location mLocation;
     private CarListAdapter carListAdapter;
     private CarAppComponent appComponents;
-    private MainActivity mainActivity;
-
 
     @Nullable
     @Override
@@ -50,7 +48,7 @@ public class CarsRepresentationFragment extends Fragment {
         appComponents = DaggerCarAppComponent.builder()
                 .contextModule(new ContextModule(getContext()))
                 .build();
-        
+
         appComponents.getApiService().getCars().enqueue(new Callback<List<Car>>() {
             @Override
             public void onResponse(Call<List<Car>> call, Response<List<Car>> response) {
@@ -96,10 +94,10 @@ public class CarsRepresentationFragment extends Fragment {
                             ActivityCompat.requestPermissions(requireActivity(), new String[]{
                                     Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+                            Toast.makeText(requireContext(), "Location permission is not granted. Use settings to turn location services on.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-
             }
 
             @Override

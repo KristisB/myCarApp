@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.carapp.databinding.FragmentCarsListItemBinding;
 import com.example.carapp.model.Car;
-import com.example.carapp.DownloadImageTask;
+import com.example.carapp.utils.DownloadImageTask;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +34,7 @@ class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.CarListViewHold
     public CarListAdapter.CarListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         FragmentCarsListItemBinding binding = FragmentCarsListItemBinding.inflate(inflater, parent, false);
+
         return new CarListViewHolder(binding);
     }
 
@@ -78,6 +79,7 @@ class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.CarListViewHold
             carsList.clear();
             carsList.addAll((Collection<? extends Car>) results.values);
             notifyDataSetChanged();
+
         }
     };
 

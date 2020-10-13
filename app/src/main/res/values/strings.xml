@@ -3,4 +3,5 @@
     <string name="get_list_of_cars">Get list of cars</string>
     <string name="sortByDistance">Sort By Distance</string>
     <string name="plateNumber">Plate number</string>
+    <string name="enter_plate_number">Enter plate number</string>
 </resources>
